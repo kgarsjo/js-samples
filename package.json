@@ -1,0 +1,23 @@
+{
+  "name": "base-karma-jasmine-phantom-requirejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "withAttribute.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Garsjo",
+  "license": "ISC",
+  "dependencies": {
+    "jasmine": "^2.3.2",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.11",
+    "karma-jasmine": "^0.3.6",
+    "karma-phantomjs-launcher": "^0.2.1",
+    "phantomjs": "^1.9.18",
+    "requirejs": "^2.1.20"
+  },
+  "devDependencies": {
+    "karma-requirejs": "^0.2.2"
+  }
+}
