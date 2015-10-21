@@ -20,5 +20,11 @@ require.config({
   deps: allTestFiles,
 
   // we have to kickoff jasmine, as it is asynchronous
-  callback: window.__karma__.start
+  callback: window.__karma__.start,
+
+  paths: {
+    jquery: 'js/libs/jquery-2.1.4.min',
+    sinon:  'js/libs/sinon',
+    underscore: 'js/libs/underscore-min'
+  }
 });
