@@ -2,11 +2,18 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
 
     describe('Linked lists', function() {
     
-        var alwaysSelect= function(head) {
+        var alwaysSelect= function(value) {
             return true;
         };
-        var neverSelect= function(head) {
+
+        var neverSelect= function(value) {
             return false;
+        };
+
+        var toUpper= function(value) {
+            return (typeof value === 'string')
+                ? value.toUpperCase()
+                : value;
         };
 
         it('Should return a node when calling asNode', function() {
@@ -83,12 +90,32 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
 
         it('Should return filtered linked nodes on filter() with some selected nodes', function() {
             var head= TestObject.createLinkedList('foo', 'bar', 'baz');
-            var filterBar= function(head) {
-                return head.value !== 'bar';
+            var filterBar= function(value) {
+                return value !== 'bar';
             };
             var actual= TestObject.filter(head, filterBar);
             expect(actual.value).toBe('foo');
             expect(actual.next.value).toBe('baz');
+            expect(actual.next.next).not.toBeDefined();
+        });
+
+        it('Should return undefined on map() with undefined head', function() {
+           var actual= TestObject.map(undefined, toUpper);
+            expect(actual).not.toBeDefined();
+        });
+
+        it('Should return mapped node on filter() with one node', function() {
+            var head= TestObject.createLinkedList('foo');
+            var actual= TestObject.map(head, toUpper);
+            expect(actual.value).toBe('FOO');
+            expect(actual.next).not.toBeDefined();
+        });
+
+        it ('Should return mapped nodes on filter() with several nodes', function() {
+            var head= TestObject.createLinkedList('foo', 'bar');
+            var actual= TestObject.map(head, toUpper);
+            expect(actual.value).toBe('FOO');
+            expect(actual.next.value).toBe('BAR');
             expect(actual.next.next).not.toBeDefined();
         });
 

@@ -26,12 +26,21 @@ define(function() {
         filter: function(head, select) {
             var self= this;
             return callOnValidHead(head, function doFilter() {
-                if (select(head)) {
+                if (select(head.value)) {
                     head.next= self.filter(head.next, select);
                     return head;
                 } else {
                     return self.filter(head.next, select);
                 }
+            });
+        },
+
+        map: function(head, fn) {
+            var self= this;
+            return callOnValidHead(head, function doMap() {
+                var newHead= self.asNode(fn(head.value));
+                newHead.next= self.map(head.next, fn);
+                return newHead;
             });
         }
 
