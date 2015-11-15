@@ -24,18 +24,6 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
             expect(node.value).toBe(expected);
         });
 
-        // Test understanding of slice
-        //      list.slice(1, 0) ==> []
-        //      list.slice(1, 1) ==> []
-        //      list.slice(0, 0) ==> []
-        //      list.slice(0, 1) ==> [0]
-        //      list.slice(0, 1)[0] ==> 0
-        it('Test array.slice', function() {
-            var list= [0,1,2,3,4];
-            var first= list.slice(0,1);
-            expect(first[0]).toBe(0);
-        });
-    
         it('Should return undefined for no arguments on createLinkedList()', function() {
             var actual= TestObject.createLinkedList();
             expect(actual).not.toBeDefined();
