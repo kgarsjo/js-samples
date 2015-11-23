@@ -1,49 +1,81 @@
 define(function() {
+	'use-strict';
 
-    var callOnValidHead= function(head, fn) {
+    function callOnValidHead(head, fn) {
+        var args= Array.prototype.slice.call(arguments, 2);
         if (head) {
-            return fn();
+            return fn.apply(undefined, args);
         }
-    };
+    }
 
-    return { 
+    function doFilter(head, select) {
+      if (select(head.value)) {
+          head.next= linkedList.filter(head.next, select);
+          return head;
+      } else {
+          return linkedList.filter(head.next, select);
+      }
+    }
 
-        asNode: function(value) {
-            return {
-             value: value
-            }
-        },
+    function asNode(value) {
+      return {
+        value: value
+      };
+    }
 
+    var linkedList= {
         createLinkedList: function() {
             var args= Array.prototype.slice.call(arguments);
             if (!!args.length) {
-                var head= this.asNode(args[0]);
+                var head= asNode(args[0]);
                 head.next= this.createLinkedList.apply(this, args.slice(1));
                 return head;
             }
         },
 
-        filter: function(head, select) {
-            var self= this;
-            return callOnValidHead(head, function doFilter() {
+        filter: (function constructFilter() {
+            var doFilter= function(head, select) {
                 if (select(head.value)) {
-                    head.next= self.filter(head.next, select);
-                    return head;
+                  head.next= linkedList.filter(head.next, select);
+                  return head;
                 } else {
-                    return self.filter(head.next, select);
+                  return linkedList.filter(head.next, select);
                 }
-            });
-        },
+            };
 
-        map: function(head, fn) {
-            var self= this;
-            return callOnValidHead(head, function doMap() {
-                var newHead= self.asNode(fn(head.value));
-                newHead.next= self.map(head.next, fn);
-                return newHead;
-            });
-        }
+            return function filter(head, select) {
+                return callOnValidHead(head, doFilter, head, select);
+            };
+        })(),
 
+        map: (function constructMap() {
+			var doMap= function(head, fn) {
+				var newHead= asNode(fn(head.value));
+				newHead.next= linkedList.map(head.next, fn);
+				return newHead;
+			};
+
+            return function map(head, fn) {
+				return callOnValidHead(head, doMap, head, fn);
+        	};
+		})(),
+
+        reverse: (function constructReverse() {
+			var doReverse= function(original, reversed) {
+				if (original) {
+					var curr= original;
+					var original= curr.next;
+					curr.next= reversed;
+					return doReverse(original, curr);
+				}
+				return reversed;
+			};
+
+			return function reverse(head) {
+				return doReverse(head);
+			};
+        })(),
     };
 
+    return linkedList;
 });

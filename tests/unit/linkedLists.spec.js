@@ -1,7 +1,7 @@
 define(['js/linkedLists'], function linkedListsSpec(TestObject) {
 
     describe('Linked lists', function() {
-    
+
         var alwaysSelect= function(value) {
             return true;
         };
@@ -15,14 +15,6 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
                 ? value.toUpperCase()
                 : value;
         };
-
-        it('Should return a node when calling asNode', function() {
-            var expected= 'Hello World';
-            var node= TestObject.asNode(expected);
-
-            expect(node).toBeDefined();
-            expect(node.value).toBe(expected);
-        });
 
         it('Should return undefined for no arguments on createLinkedList()', function() {
             var actual= TestObject.createLinkedList();
@@ -41,7 +33,7 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
             expect(head.value).toBe('foo');
             expect(head.next.value).toBe('bar');
             expect(head.next.next.value).toBe('baz');
-            expect(head.next.next.next).not.toBeDefined();    
+            expect(head.next.next.next).not.toBeDefined();
         });
 
         it('Should return undefined on filter() with undefined head', function() {
@@ -104,6 +96,26 @@ define(['js/linkedLists'], function linkedListsSpec(TestObject) {
             var actual= TestObject.map(head, toUpper);
             expect(actual.value).toBe('FOO');
             expect(actual.next.value).toBe('BAR');
+            expect(actual.next.next).not.toBeDefined();
+        });
+
+        it('Should return undefined on reverse() with undefined head', function() {
+            var actual= TestObject.reverse(undefined);
+            expect(actual).not.toBeDefined();
+        });
+
+        it('Should return a single node on reverse() with a single node', function() {
+            var head= TestObject.createLinkedList('foo');
+            var actual= TestObject.reverse(head);
+            expect(actual.value).toBe('foo');
+            expect(actual.next).not.toBeDefined();
+        });
+
+        it('Should return reversed nodes on reverse() with linked nodes', function() {
+            var head= TestObject.createLinkedList('foo', 'bar');
+            var actual= TestObject.reverse(head);
+            expect(actual.value).toBe('bar');
+            expect(actual.next.value).toBe('foo');
             expect(actual.next.next).not.toBeDefined();
         });
 
